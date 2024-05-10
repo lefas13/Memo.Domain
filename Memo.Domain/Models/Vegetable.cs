@@ -38,7 +38,7 @@ public class Vegetable
 
     public override string ToString()
     {
-        return $"({Id}, '{Name}', {Type?.Id}, {Convert.ToString(HeightSm, CultureInfo.InvariantCulture)}, {Planting?.Id}, {Harvest?.Id})";
+        return $"('{Name}', {Type?.Id}, {HeightSm.ToString().Replace(',','.')}, {Planting?.Id}, {Harvest?.Id})";
     }
 
     public static implicit operator Vegetable(VegetableViewModel vegetableViewModel)

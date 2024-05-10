@@ -99,15 +99,6 @@ public class SqlContext : IDbContext
     {
         SqlCommand deleteVegetable = new("DELETE FROM Vegetable", _connection);
         deleteVegetable.ExecuteNonQuery();
-
-        SqlCommand deleteType = new("DELETE FROM Type", _connection);
-        deleteType.ExecuteNonQuery();
-
-        SqlCommand deletePlanting = new("DELETE FROM Plant", _connection);
-        deletePlanting.ExecuteNonQuery();
-
-        SqlCommand deleteHarvest = new("DELETE FROM Harvest", _connection);
-        deleteHarvest.ExecuteNonQuery();
     }
 
 
@@ -120,7 +111,7 @@ public class SqlContext : IDbContext
         }
         typeStr = typeStr.Remove(typeStr.Length - 2);
 
-        SqlCommand insertType = new("INSERT INTO Type (TypeID, `Name`) " +
+        SqlCommand insertType = new("INSERT INTO Type (TypeID, [Name]) " +
                                          "VALUES " + typeStr, _connection);
         insertType.ExecuteNonQuery();
     }
@@ -162,7 +153,7 @@ public class SqlContext : IDbContext
         }
         vegetableStr = vegetableStr.Remove(vegetableStr.Length - 2);
 
-        SqlCommand insertVegetable = new("INSERT INTO Vegetable (VegetableID, `Name`, TypeID, Height, PlantingID, HarvestID) " +
+        SqlCommand insertVegetable = new("INSERT INTO Vegetable ([Name], TypeID, Height, PlantingID, HarvestID) " +
                                          "VALUES " + vegetableStr, _connection);
         insertVegetable.ExecuteNonQuery();
     }
@@ -170,9 +161,6 @@ public class SqlContext : IDbContext
     private void UpdateAll()
     {
         DeleteAll();
-        InsertIntoType();
-        InsertIntoPlanting();
-        InsertIntoHarvest();
         InsertIntoVegetable();
     }
 
