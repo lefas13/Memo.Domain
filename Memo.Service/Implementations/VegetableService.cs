@@ -3,7 +3,7 @@ using Memo.Domain.ViewModels;
 using Memo.Domain;
 using Memo.Service.Interfaces;
 
-namespace Planet.Service.Implementations
+namespace Memo.Service.Implementations
 {
     public class VegetableService(IBaseRepository<Vegetable> vegetableRepository) : IVegetableService
     {

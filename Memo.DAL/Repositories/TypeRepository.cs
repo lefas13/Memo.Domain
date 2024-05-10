@@ -1,7 +1,7 @@
 ﻿using Memo.DAL.Interfaces;
 using Memo.Domain;
 
-namespace Planet.DAL.Repositories;
+namespace Memo.DAL.Repositories;
 
 public class TypeRepository(IDbContext dbContext) : IBaseRepository<Memo.Domain.Type>
 {
