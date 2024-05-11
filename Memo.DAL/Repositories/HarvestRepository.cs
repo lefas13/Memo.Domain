@@ -34,8 +34,16 @@ public class HarvestRepository(IDbContext dbContext) : IBaseRepository<Harvest>
 
     public bool Update(Harvest oldHarvest, Harvest newHarvest)
     {
-        Harvest? harvestToUpdate = _dbContext.Harvest.Find(s => s == oldHarvest);
-
+        List<Harvest> harvestsToUpdate = _dbContext.Harvest!;
+        Harvest? harvestToUpdate = null;
+        foreach (Harvest harvest in harvestsToUpdate)
+        {
+            if (harvest == oldHarvest)
+            {
+                harvestToUpdate = harvest;
+                break;
+            }
+        }
         if (harvestToUpdate != null)
         {
             harvestToUpdate.HarvestTime = newHarvest.HarvestTime;

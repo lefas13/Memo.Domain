@@ -34,8 +34,16 @@ public class PlantingRepository(IDbContext dbContext) : IBaseRepository<Planting
 
     public bool Update(Planting oldPlanting, Planting newPlanting)
     {
-        Planting? plantingToUpdate = _dbContext.Planting.Find(s => s == oldPlanting);
-
+        List<Planting> plantingsToUpdate = _dbContext.Planting!;
+        Planting? plantingToUpdate = null;
+        foreach (Planting planting in plantingsToUpdate)
+        {
+            if (planting == oldPlanting)
+            {
+                plantingToUpdate = planting;
+                break;
+            }
+        }
         if (plantingToUpdate != null)
         {
             plantingToUpdate.PlantingTime = newPlanting.PlantingTime;

@@ -2,6 +2,7 @@
 using Memo.Domain.ViewModels;
 using Memo.Domain;
 using Memo.Service.Interfaces;
+using System.Xml.Linq;
 
 namespace Memo.Service.Implementations
 {
@@ -34,11 +35,17 @@ namespace Memo.Service.Implementations
         {
             try
             {
-                Vegetable? vegetable = _vegetableRepository.ReadAll().FirstOrDefault(vegetable => vegetable.Name == name);
+                List<Vegetable>? vegetables = _vegetableRepository.ReadAll();
+                for (int i = 0; i < vegetables.Count; i++)
+                {
+                    if (vegetables[i].Name == name)
+                    {
+                        ArgumentNullException.ThrowIfNull(vegetables[i]);
 
-                ArgumentNullException.ThrowIfNull(vegetable);
-
-                return _vegetableRepository.Delete(vegetable); ;
+                        return _vegetableRepository.Delete(vegetables[i]);
+                    }
+                }
+                return false;
             }
             catch (ArgumentNullException)
             {
@@ -54,11 +61,17 @@ namespace Memo.Service.Implementations
         {
             try
             {
-                Vegetable? vegetable = _vegetableRepository.ReadAll().FirstOrDefault(vegetable => vegetable.Id == id);
+                List<Vegetable>? vegetables = _vegetableRepository.ReadAll();
+                for (int i = 0; i < vegetables.Count; i++)
+                {
+                    if (vegetables[i].Id == id)
+                    {
+                        ArgumentNullException.ThrowIfNull(vegetables[i]);
 
-                ArgumentNullException.ThrowIfNull(vegetable);
-
-                return _vegetableRepository.Delete(vegetable); ;
+                        return _vegetableRepository.Delete(vegetables[i]);
+                    }
+                }
+                return false;
             }
             catch (ArgumentNullException)
             {
@@ -74,13 +87,19 @@ namespace Memo.Service.Implementations
         {
             try
             {
-                Vegetable? oldVegetable = _vegetableRepository.ReadAll().FirstOrDefault(vegetable => vegetable.Id == id);
+                List<Vegetable>? vegetables = _vegetableRepository.ReadAll();
                 Vegetable newVegetable = vegetableViewModel;
-
-                ArgumentNullException.ThrowIfNull(oldVegetable);
-                ArgumentNullException.ThrowIfNull(newVegetable);
-
-                return _vegetableRepository.Update(oldVegetable, newVegetable);
+                
+                for (int i = 0; i < vegetables.Count; i++)
+                {
+                    if (vegetables[i].Id == id)
+                    {
+                        ArgumentNullException.ThrowIfNull(vegetables[i]);
+                        ArgumentNullException.ThrowIfNull(newVegetable);
+                        return _vegetableRepository.Update(vegetables[i], newVegetable);
+                    }
+                }
+                return false;
             }
             catch (ArgumentNullException ex)
             {
@@ -96,13 +115,19 @@ namespace Memo.Service.Implementations
         {
             try
             {
-                Vegetable? oldVegetable = _vegetableRepository.ReadAll().FirstOrDefault(vegetable => vegetable.Name == name);
-                ArgumentNullException.ThrowIfNull(oldVegetable);
+                List<Vegetable>? vegetables = _vegetableRepository.ReadAll();
                 Vegetable newVegetable = vegetableViewModel;
-                ArgumentNullException.ThrowIfNull(newVegetable);
-                newVegetable.Id = oldVegetable.Id;
 
-                return _vegetableRepository.Update(oldVegetable, newVegetable);
+                for (int i = 0; i < vegetables.Count; i++)
+                {
+                    if (vegetables[i].Name == name)
+                    {
+                        ArgumentNullException.ThrowIfNull(vegetables[i]);
+                        ArgumentNullException.ThrowIfNull(newVegetable);
+                        return _vegetableRepository.Update(vegetables[i], newVegetable);
+                    }
+                }
+                return false;
             }
             catch (ArgumentNullException ex)
             {
@@ -119,13 +144,20 @@ namespace Memo.Service.Implementations
         {
             try
             {
-                Vegetable? vegetable = _vegetableRepository.ReadAll().FirstOrDefault(vegetable => vegetable.Id == id);
+                List<Vegetable>? vegetables = _vegetableRepository.ReadAll();
+                for (int i = 0; i < vegetables.Count; i++)
+                {
+                    if (vegetables[i].Id == id)
+                    {
+                        ArgumentNullException.ThrowIfNull(vegetables[i]);
 
-                ArgumentNullException.ThrowIfNull(vegetable);
+                        VegetableViewModel vegetableViewModel = vegetables[i];
 
-                VegetableViewModel vegetableViewModel = vegetable;
-
-                return vegetableViewModel;
+                        return vegetableViewModel;
+                    }
+                }
+                VegetableViewModel vegetableView = new VegetableViewModel();
+                return vegetableView;
             }
             catch (ArgumentNullException)
             {
@@ -165,13 +197,20 @@ namespace Memo.Service.Implementations
         {
             try
             {
-                Vegetable? vegetable = _vegetableRepository.ReadAll().FirstOrDefault(vegetable => vegetable.Name == name);
+                List<Vegetable>? vegetables = _vegetableRepository.ReadAll();
+                for (int i = 0; i < vegetables.Count; i++)
+                {
+                    if (vegetables[i].Name == name)
+                    {
+                        ArgumentNullException.ThrowIfNull(vegetables[i]);
 
-                ArgumentNullException.ThrowIfNull(vegetable);
+                        VegetableViewModel vegetableViewModel = vegetables[i];
 
-                VegetableViewModel vegetableViewModel = vegetable;
-
-                return vegetableViewModel;
+                        return vegetableViewModel;
+                    }
+                }
+                VegetableViewModel vegetableView = new VegetableViewModel();
+                return vegetableView;
             }
             catch (ArgumentNullException)
             {

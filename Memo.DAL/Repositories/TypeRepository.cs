@@ -34,8 +34,16 @@ public class TypeRepository(IDbContext dbContext) : IBaseRepository<Memo.Domain.
 
     public bool Update(Memo.Domain.Type oldType, Memo.Domain.Type newType)
     {
-        Memo.Domain.Type? typeToUpdate = _dbContext.Type.Find(s => s == oldType);
-
+        List<Memo.Domain.Type> typesToUpdate = _dbContext.Type!;
+        Memo.Domain.Type? typeToUpdate = null;
+        foreach (Memo.Domain.Type type in typesToUpdate)
+        {
+            if (type == oldType)
+            {
+                typeToUpdate = type;
+                break;
+            }
+        }
         if (typeToUpdate != null)
         {
             typeToUpdate.TypeV = newType.TypeV;
