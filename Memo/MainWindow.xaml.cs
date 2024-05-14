@@ -21,7 +21,7 @@ namespace Memo
         public MainWindow()
         {
             InitializeComponent();
-            IDbContext dbContext = new SqlContext();
+            IDbContext dbContext = new SqlContextLinq();
 
             IBaseRepository<Vegetable> vegetableRepository = new VegetableRepository(dbContext);
             _vegetableService = new VegetableService(vegetableRepository);
