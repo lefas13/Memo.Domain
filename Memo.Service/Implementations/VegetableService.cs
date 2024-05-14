@@ -35,17 +35,11 @@ namespace Memo.Service.Implementations
         {
             try
             {
-                List<Vegetable>? vegetables = _vegetableRepository.ReadAll();
-                for (int i = 0; i < vegetables.Count; i++)
-                {
-                    if (vegetables[i].Name == name)
-                    {
-                        ArgumentNullException.ThrowIfNull(vegetables[i]);
+                Vegetable? vegetable = _vegetableRepository.ReadAll().FirstOrDefault(vegetable => vegetable.Name == name);
 
-                        return _vegetableRepository.Delete(vegetables[i]);
-                    }
-                }
-                return false;
+                ArgumentNullException.ThrowIfNull(vegetable);
+
+                return _vegetableRepository.Delete(vegetable);
             }
             catch (ArgumentNullException)
             {
@@ -61,17 +55,11 @@ namespace Memo.Service.Implementations
         {
             try
             {
-                List<Vegetable>? vegetables = _vegetableRepository.ReadAll();
-                for (int i = 0; i < vegetables.Count; i++)
-                {
-                    if (vegetables[i].Id == id)
-                    {
-                        ArgumentNullException.ThrowIfNull(vegetables[i]);
+                Vegetable? vegetable = _vegetableRepository.ReadAll().FirstOrDefault(vegetable => vegetable.Id == id);
 
-                        return _vegetableRepository.Delete(vegetables[i]);
-                    }
-                }
-                return false;
+                ArgumentNullException.ThrowIfNull(vegetable);
+
+                return _vegetableRepository.Delete(vegetable);
             }
             catch (ArgumentNullException)
             {
@@ -87,19 +75,13 @@ namespace Memo.Service.Implementations
         {
             try
             {
-                List<Vegetable>? vegetables = _vegetableRepository.ReadAll();
+                Vegetable? oldVegetable = _vegetableRepository.ReadAll().FirstOrDefault(vegetable => vegetable.Id == id);
                 Vegetable newVegetable = vegetableViewModel;
-                
-                for (int i = 0; i < vegetables.Count; i++)
-                {
-                    if (vegetables[i].Id == id)
-                    {
-                        ArgumentNullException.ThrowIfNull(vegetables[i]);
-                        ArgumentNullException.ThrowIfNull(newVegetable);
-                        return _vegetableRepository.Update(vegetables[i], newVegetable);
-                    }
-                }
-                return false;
+
+                ArgumentNullException.ThrowIfNull(oldVegetable);
+                ArgumentNullException.ThrowIfNull(newVegetable);
+
+                return _vegetableRepository.Update(oldVegetable, newVegetable);
             }
             catch (ArgumentNullException ex)
             {
@@ -115,19 +97,13 @@ namespace Memo.Service.Implementations
         {
             try
             {
-                List<Vegetable>? vegetables = _vegetableRepository.ReadAll();
+                Vegetable? oldVegetable = _vegetableRepository.ReadAll().FirstOrDefault(vegetable => vegetable.Name == name);
+                ArgumentNullException.ThrowIfNull(oldVegetable);
                 Vegetable newVegetable = vegetableViewModel;
+                ArgumentNullException.ThrowIfNull(newVegetable);
+                newVegetable.Id = oldVegetable.Id;
 
-                for (int i = 0; i < vegetables.Count; i++)
-                {
-                    if (vegetables[i].Name == name)
-                    {
-                        ArgumentNullException.ThrowIfNull(vegetables[i]);
-                        ArgumentNullException.ThrowIfNull(newVegetable);
-                        return _vegetableRepository.Update(vegetables[i], newVegetable);
-                    }
-                }
-                return false;
+                return _vegetableRepository.Update(oldVegetable, newVegetable);
             }
             catch (ArgumentNullException ex)
             {
@@ -144,20 +120,13 @@ namespace Memo.Service.Implementations
         {
             try
             {
-                List<Vegetable>? vegetables = _vegetableRepository.ReadAll();
-                for (int i = 0; i < vegetables.Count; i++)
-                {
-                    if (vegetables[i].Id == id)
-                    {
-                        ArgumentNullException.ThrowIfNull(vegetables[i]);
+                Vegetable? vegetable = _vegetableRepository.ReadAll().FirstOrDefault(vegetable => vegetable.Id == id);
 
-                        VegetableViewModel vegetableViewModel = vegetables[i];
+                ArgumentNullException.ThrowIfNull(vegetable);
 
-                        return vegetableViewModel;
-                    }
-                }
-                VegetableViewModel vegetableView = new VegetableViewModel();
-                return vegetableView;
+                VegetableViewModel vegetableViewModel = vegetable;
+
+                return vegetableViewModel;
             }
             catch (ArgumentNullException)
             {
@@ -197,20 +166,13 @@ namespace Memo.Service.Implementations
         {
             try
             {
-                List<Vegetable>? vegetables = _vegetableRepository.ReadAll();
-                for (int i = 0; i < vegetables.Count; i++)
-                {
-                    if (vegetables[i].Name == name)
-                    {
-                        ArgumentNullException.ThrowIfNull(vegetables[i]);
+                Vegetable? vegetable = _vegetableRepository.ReadAll().FirstOrDefault(vegetable => vegetable.Name == name);
 
-                        VegetableViewModel vegetableViewModel = vegetables[i];
+                ArgumentNullException.ThrowIfNull(vegetable);
 
-                        return vegetableViewModel;
-                    }
-                }
-                VegetableViewModel vegetableView = new VegetableViewModel();
-                return vegetableView;
+                VegetableViewModel vegetableViewModel = vegetable;
+
+                return vegetableViewModel;
             }
             catch (ArgumentNullException)
             {
@@ -221,6 +183,58 @@ namespace Memo.Service.Implementations
                 throw new Exception($"[GetByName]:{ex.Message}");
             }
         }
+
+        public List<VegetableViewModel> FindByName(string name)
+        {
+            return GetAll().FindAll(vegetable => vegetable.Name.Contains(name));
+        }
+
+        public List<VegetableViewModel> GroupByType(string name)
+        {
+            var Groups = from vegetable in GetAll()
+                         group vegetable by vegetable.TypeName
+                         into vegetableGroups
+                         select new
+                         {
+                             Name = vegetableGroups.Key,
+                             Count = vegetableGroups.Count(),
+                             Vegetable = from vegetableGroup in vegetableGroups
+                                       select vegetableGroup
+                         };
+
+            return Groups.Where(x => x.Name == name).Select(x => x.Vegetable).First().ToList();
+        }
+
+        public List<VegetableViewModel> GroupByHarvest(string name)
+        {
+            var Groups = from vegetable in GetAll()
+                         group vegetable by vegetable.HarvestTime
+                         into vegetableGroups
+                         select new
+                         {
+                             Name = vegetableGroups.Key,
+                             Count = vegetableGroups.Count(),
+                             Vegetable = from vegetableGroup in vegetableGroups
+                                         select vegetableGroup
+                         };
+
+            return Groups.Where(x => x.Name.ToString() == name).Select(x => x.Vegetable).First().ToList();
+        }
+
+        public int Count()
+        {
+            return GetAll().Count();
+        }
+
+        public double HeightAvg()
+            => GetAll().Average(x => x.HeightSm);
+
+        public double HeightMin()
+            => GetAll().Min(x => x.HeightSm);
+
+        public double HeightMax()
+            => GetAll().Max(x => x.HeightSm);
+
     }
 }
 

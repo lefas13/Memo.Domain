@@ -34,26 +34,18 @@ public class TypeRepository(IDbContext dbContext) : IBaseRepository<Memo.Domain.
 
     public bool Update(Memo.Domain.Type oldType, Memo.Domain.Type newType)
     {
-        List<Memo.Domain.Type> typesToUpdate = _dbContext.Type!;
-        Memo.Domain.Type? typeToUpdate = null;
-        foreach (Memo.Domain.Type type in typesToUpdate)
+        Domain.Type? varietyToUpdate = _dbContext.Type.Find(s => s == oldType);
+
+        if (varietyToUpdate != null)
         {
-            if (type == oldType)
-            {
-                typeToUpdate = type;
-                break;
-            }
-        }
-        if (typeToUpdate != null)
-        {
-            typeToUpdate.TypeV = newType.TypeV;
+            varietyToUpdate.TypeV = newType.TypeV;
 
             _dbContext.SaveChanges();
             return true;
         }
         else
         {
-            throw new ArgumentNullException($"Овощь не найден в базе данных для обновления:{typeToUpdate}");
+            throw new ArgumentNullException($"Овощь не найден в базе данных для обновления:{varietyToUpdate}");
         }
     }
 

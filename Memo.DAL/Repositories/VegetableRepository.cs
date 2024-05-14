@@ -34,16 +34,7 @@ public class VegetableRepository(IDbContext dbContext) : IBaseRepository<Vegetab
 
     public bool Update(Vegetable oldVegetable, Vegetable newVegetable)
     {
-        List<Vegetable?> vegetablesToUpdate = _dbContext.Vegetable!;
-        Vegetable vegetableToUpdate = null;
-        foreach (Vegetable vegetable in vegetablesToUpdate)
-        {
-            if (vegetable == oldVegetable)
-            {
-                vegetableToUpdate = vegetable;
-                break;
-            }
-        }
+        Vegetable? vegetableToUpdate = _dbContext.Vegetable.Find(vegetable => vegetable == oldVegetable);
 
         if (vegetableToUpdate != null)
         {

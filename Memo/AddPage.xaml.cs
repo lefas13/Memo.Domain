@@ -22,17 +22,9 @@ namespace Memo
             _typeViewModels = typeService.GetAll();
             _harvestViewModels = harvestService.GetAll();
             foreach (TypeViewModel x in _typeViewModels.Distinct())
-            {
-                comboBoxType.Items.Add(x.TypeV);
-            }
-            foreach (PlantingViewModel x in _plantingViewModels.Distinct())
-            {
-                comboBoxPlanting.Items.Add(x.Planting);
-            }
-            foreach (HarvestViewModel x in _harvestViewModels.Distinct())
-            {
-                comboBoxHarvest.Items.Add(x.HarvestTime);
-            }
+            comboBoxType.ItemsSource = _typeViewModels.Select(x => x.TypeV).Distinct();
+            comboBoxPlanting.ItemsSource = _plantingViewModels.Select(x => x.Planting).Distinct();
+            comboBoxHarvest.ItemsSource = _harvestViewModels.Select(x => x.HarvestTime).Distinct();
         }
 
         private void SubmitButton_Click(object sender, RoutedEventArgs e)

@@ -19,6 +19,15 @@ namespace Memo.Service.Interfaces
         bool Edit(int id, VegetableViewModel viewModel);
 
         bool Edit(string name, VegetableViewModel viewModel);
+
+        public List<VegetableViewModel> FindByName(string name);
+        public List<VegetableViewModel> GroupByType(string name);
+
+        public List<VegetableViewModel> GroupByHarvest(string name);
+        public int Count();
+        double HeightAvg();
+        double HeightMin();
+        double HeightMax();
     }
 }
 
