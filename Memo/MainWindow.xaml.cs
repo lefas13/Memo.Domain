@@ -61,17 +61,22 @@ namespace Memo
                     break;
                 case (Key.F2):
                     {
-                        if (dataGrid.SelectedItem != null)
+                        VegetableViewModel vegetableViewModel = (dataGrid.SelectedItem as VegetableViewModel)!;
+                        if (vegetableViewModel != null)
                         {
-                            dataGrid.SelectedItem = new Vegetable();
-                            //dataGrid.ItemsSource = _vegetableService.GetAll();
+                            _vegetableService.Delete(vegetableViewModel.Name);
+                            dataGrid.ItemsSource = _vegetableService.GetAll();
                         }
                     }
                     break;
                 case (Key.F3):
                     {
-                        PageFrame.Content = new UpdatePage(_plantingService, _harvestService, _typeService, _vegetableService);
-                        dataGrid.ItemsSource = _vegetableService.GetAll();
+                        VegetableViewModel vegetableViewModel = (dataGrid.SelectedItem as VegetableViewModel)!;
+                        if (vegetableViewModel != null)
+                        {
+                            _vegetableService.Delete(vegetableViewModel.Name);
+                            PageFrame.Content = new UpdatePage(_plantingService, _harvestService, _typeService, _vegetableService, vegetableViewModel);
+                        }
                     }
                     break;
                 case (Key.F4): 
@@ -98,6 +103,11 @@ namespace Memo
                         $"Средняя высота по всем овощам: {_vegetableService.HeightAvg()};\n" +
                         $"Минимальная высота среди всех овощей: {_vegetableService.HeightMin()};\n" +
                         $"Максимальная высота среди всех овощей: {_vegetableService.HeightMax()};\n");
+                    }
+                    break;
+                    case (Key.Tab): 
+                    {
+                        dataGrid.ItemsSource = _vegetableService.GetAll();
                     }
                     break;
             }

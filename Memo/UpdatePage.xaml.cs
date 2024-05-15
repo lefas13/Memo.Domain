@@ -13,7 +13,9 @@ namespace Memo
 
         private readonly IVegetableService _vegetableService;
 
-        public UpdatePage(IPlantingService plantingService, IHarvestService harvestService, ITypeService typeService, IVegetableService vegetableService)
+        private readonly VegetableViewModel _oldModel;
+
+        public UpdatePage(IPlantingService plantingService, IHarvestService harvestService, ITypeService typeService, IVegetableService vegetableService, VegetableViewModel vegetableViewModel)
         {
             InitializeComponent();
 
@@ -21,6 +23,12 @@ namespace Memo
             _plantingViewModels = plantingService.GetAll();
             _typeViewModels = typeService.GetAll();
             _harvestViewModels = harvestService.GetAll();
+            _oldModel = vegetableViewModel;
+            Name.Text = _oldModel.Name;
+            comboBoxType.SelectedItem = _oldModel.TypeName;
+            comboBoxPlanting.SelectedItem = _oldModel.PlantingTime;
+            comboBoxHarvest.SelectedItem = _oldModel.HarvestTime;
+            vegetableHeight.Text = _oldModel.HeightSm.ToString();
             comboBoxType.ItemsSource = _typeViewModels.Select(x => x.TypeV).Distinct();
             comboBoxPlanting.ItemsSource = _plantingViewModels.Select(x => x.Planting).Distinct();
             comboBoxHarvest.ItemsSource = _harvestViewModels.Select(x => x.HarvestTime).Distinct();
@@ -30,7 +38,7 @@ namespace Memo
         {
             try
             {
-                VegetableViewModel vegetableViewModel = new();
+                VegetableViewModel vegeViewModel = new();
                 if (Name.Text.Trim() != string.Empty)
                 {
                     if (comboBoxType.SelectedItem != null &&
@@ -50,10 +58,9 @@ namespace Memo
                         }
                     }
                 }
-                if (searchName.Text.Trim() != string.Empty)
+                if (vegeViewModel.Name.Trim() != string.Empty)
                 {
-                    _vegetableService.Delete(searchName.Text);
-                    _vegetableService.Edit(searchName.Text.Trim(), vegetableViewModel);
+                    _vegetableService.Edit(_oldModel.Name.Trim(), vegeViewModel);
                 }
             }
             catch (Exception ex)

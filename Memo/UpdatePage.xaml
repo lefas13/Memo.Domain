@@ -22,8 +22,6 @@
         <Label Content="Высота растения:" HorizontalAlignment="Right" Margin="0,172,272,0" VerticalAlignment="Top" Width="150" FontSize="14"/>
         <TextBox x:Name="vegetableHeight" HorizontalAlignment="Right" Margin="0,176,22,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="240" Height="21" FontSize="14"/>
         <Button x:Name="cancelButton" Content="Отмена" Click="CancelButton_Click" VerticalAlignment="Bottom" HorizontalAlignment="Right" MinWidth="100" Margin="0,0,132,10"/>
-        <TextBox x:Name="searchName" HorizontalAlignment="Right" Margin="0,36,566,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="212" Height="22" FontSize="14"/>
-        <Label Content="Сорт искомого овоща:" HorizontalAlignment="Right" Margin="0,2,526,0" VerticalAlignment="Top" Width="252" FontSize="14" Height="29"/>
         <Label Content="Изменения овоща" HorizontalAlignment="Right" Margin="0,2,73,0" VerticalAlignment="Top" Width="252" FontSize="16" Height="29"/>
     </Grid>
 </Page>
