@@ -7,22 +7,12 @@
         mc:Ignorable="d"
         Title="Памятка дачнику-овощеводу" Height="450" Width="1000">
     <Grid>
-
-
-        <Button Content="Загрузить" HorizontalAlignment="Left" VerticalAlignment="Top" Width="60" BorderBrush="{x:Null}" Background="{x:Null}" Click="LoadButton_Click"/>
-        <Button Content="Добавить" HorizontalAlignment="Left" VerticalAlignment="Top" Width="60" Margin="60,0,0,0" Background="{x:Null}" BorderBrush="{x:Null}" Click="AddButton_Click"/>
-        <Button Content="Удалить" HorizontalAlignment="Left" VerticalAlignment="Top" Width="60" Margin="120,0,0,0" BorderBrush="{x:Null}" Background="{x:Null}" Click="DeleteButton_Click"/>
-        <Button Content="Изменить" HorizontalAlignment="Left" VerticalAlignment="Top" Width="60" Margin="180,0,0,0" Background="{x:Null}" BorderBrush="{x:Null}" Click="UpdateButton_Click"/>
-        <Grid>
-
-            <DataGrid x:Name="dataGrid" Margin="0,20,0,0" 
+            <DataGrid x:Name="dataGrid" Margin="0,0,0,0" 
                       AutoGeneratingColumn="OnAutoGeneratingColumn"
                       IsReadOnly="True" ColumnWidth="250*" 
                       CanUserResizeColumns="False"
                       CanUserResizeRows="False"/>
             <Frame x:Name="PageFrame" NavigationUIVisibility="Hidden"></Frame>
         </Grid>
-
-    </Grid>
 </Window>
 

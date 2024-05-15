@@ -186,7 +186,11 @@ namespace Memo.Service.Implementations
 
         public List<VegetableViewModel> FindByName(string name)
         {
-            return GetAll().FindAll(vegetable => vegetable.Name.Contains(name));
+            if (name == null)
+            {
+                return new List<VegetableViewModel>();
+            }
+            return GetAll().FindAll(vegetable => vegetable.Name == name);
         }
 
         public List<VegetableViewModel> GroupByType(string name)

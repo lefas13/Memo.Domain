@@ -164,33 +164,6 @@ public class SqlContextLinq : IDbContext
         _dtVegetable.Clear();
         adapter.Update(_dtVegetable);
         _dtVegetable.AcceptChanges();
-
-        adapter = new()
-        {
-            DeleteCommand = new("DELETE FROM Type", _connection)
-        };
-        adapter.DeleteCommand.ExecuteNonQuery();
-        _dtType.Clear();
-        adapter.Update(_dtType);
-        _dtType.AcceptChanges();
-
-        adapter = new()
-        {
-            DeleteCommand = new("DELETE FROM Plant", _connection)
-        };
-        adapter.DeleteCommand.ExecuteNonQuery();
-        _dtPlanting.Clear();
-        adapter.Update(_dtPlanting);
-        _dtPlanting.AcceptChanges();
-
-        adapter = new()
-        {
-            DeleteCommand = new("DELETE FROM Harvest", _connection)
-        };
-        adapter.DeleteCommand.ExecuteNonQuery();
-        _dtHarvest.Clear();
-        adapter.Update(_dtHarvest);
-        _dtHarvest.AcceptChanges();
     }
 
 
@@ -287,7 +260,6 @@ public class SqlContextLinq : IDbContext
             InsertCommand = new("INSERT INTO Vegetable (Name, TypeID, Height, PlantingID, HarvestID) " +
                                 "VALUES (@Name, @TypeID, @HeightSm, @PlantingID, @HarvestID)", _connection)
         };
-
 
         adapter.InsertCommand.Parameters.Add("@Name", SqlDbType.VarChar, 50, "Name");
         adapter.InsertCommand.Parameters.Add("@TypeID", SqlDbType.Int, 4, "TypeID");
