@@ -211,18 +211,18 @@ namespace Memo.Service.Implementations
 
         public List<VegetableViewModel> GroupByHarvest(string name)
         {
-            var Groups = from vegetable in GetAll()
-                         group vegetable by vegetable.HarvestTime
-                         into vegetableGroups
-                         select new
-                         {
-                             Name = vegetableGroups.Key,
-                             Count = vegetableGroups.Count(),
-                             Vegetable = from vegetableGroup in vegetableGroups
-                                         select vegetableGroup
-                         };
+                var Groups = from vegetable in GetAll()
+                             group vegetable by vegetable.HarvestTime
+                             into vegetableGroups
+                             select new
+                             {
+                                 Name = vegetableGroups.Key,
+                                 Count = vegetableGroups.Count(),
+                                 Vegetable = from vegetableGroup in vegetableGroups
+                                             select vegetableGroup
+                             };
 
-            return Groups.Where(x => x.Name.ToString() == name).Select(x => x.Vegetable).First().ToList();
+                return Groups.Where(x => x.Name.ToString() == name).Select(x => x.Vegetable).First().ToList();
         }
 
         public int Count()

@@ -3,6 +3,7 @@ using Memo.Service.Interfaces;
 using System.Windows.Controls;
 using System.Windows;
 using System.Windows.Input;
+using Memo.Domain.ViewModels;
 
 namespace Memo;
 
@@ -17,44 +18,33 @@ public partial class GroupPage : Page
         _vegetableService = vegetableService;
         _typeService = typeService;
         _harvestService = harvestService;
-        this.KeyDown += new KeyEventHandler(GroupPage_KeyDown);
-    }
-
-    private void GroupPage_KeyDown(object sender, KeyEventArgs e)
-    {
-        switch (e.Key)
-        {
-            case (Key.Enter):
-                {
-                    if (By.Text == "Виду овоща")
-                    {
-                        Group.ItemsSource = _typeService.GetAll().Select(x => x.TypeV);
-                    }
-                    else
-                    {
-                        Group.ItemsSource = _harvestService.GetAll().Select(x => x.HarvestTime);
-                    }
-                }
-                break;
-        }
     }
 
         private void SubmitButton_Click(object sender, RoutedEventArgs e)
     {
-        if (Group.SelectedItem != null)
+        try
         {
-            string name = Group.SelectedItem.ToString()!;
-            if (DataContext is MainWindow mainWindow)
+            if (Group.SelectedItem != null)
             {
-                if (By.Text == "Виду овоща")
+                string name = Group.SelectedItem.ToString()!;
+                if (DataContext is MainWindow mainWindow)
                 {
-                    mainWindow.dataGrid.ItemsSource = _vegetableService.GroupByType(name);
+                    if (By.Text == "Виду овоща")
+                    {
+                        mainWindow.dataGrid.ItemsSource = _vegetableService.GroupByType(name);
+                    }
+                    else
+                    {
+                        mainWindow.dataGrid.ItemsSource = _vegetableService.GroupByHarvest(name);
+                    }
                 }
-                else
-                {
-                    mainWindow.dataGrid.ItemsSource = _vegetableService.GroupByHarvest(name);
-                }
+                Content = null;
             }
+        }
+        catch (Exception ex)
+        {
+            if (DataContext is MainWindow mainWindow)
+                mainWindow.dataGrid.ItemsSource = new List<VegetableViewModel>();
             Content = null;
         }
     }
@@ -62,5 +52,19 @@ public partial class GroupPage : Page
     private void CancelButton_Click(object sender, RoutedEventArgs e)
     {
         Content = null;
+    }
+
+    private void By_SelectionChanged(object sender, SelectionChangedEventArgs e)
+    {
+        ComboBox comboBox = (ComboBox)sender;
+        ComboBoxItem selectedComboBoxItem = (ComboBoxItem)comboBox.SelectedItem;
+        if (selectedComboBoxItem.Content.ToString() == "Виду овоща")
+        {
+            Group.ItemsSource = _typeService.GetAll().Select(x => x.TypeV);
+        }
+        else if(selectedComboBoxItem.Content.ToString() == "Времени сбора урожая")
+        {
+            Group.ItemsSource = _harvestService.GetAll().Select(x => x.HarvestTime);
+        }
     }
 }
